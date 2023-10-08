@@ -3,13 +3,13 @@
 %bcond_without	doc	# Sphinx documentation
 %bcond_without	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
-# see python3-itsdangerous.spec
-%bcond_with	python3 # CPython 3.x module
+%bcond_with	python3 # CPython 3.x module (built from python3-itsdangerous.spec)
 
 %define 	module  itsdangerous
 Summary:	Various helpers to pass trusted data to untrusted environments and back
 Summary(pl.UTF-8):	Wspomaganie przekazywania danych do i z niezaufanych środowisk
 Name:		python-%{module}
+# keep 1.x here for python2 support
 Version:	1.1.0
 Release:	4
 License:	BSD
@@ -37,8 +37,8 @@ BuildRequires:	python3-pytest
 %endif
 %endif
 %if %{with doc}
-BuildRequires:	python3-pallets-sphinx-themes >= 1.1.0
-BuildRequires:	sphinx-pdg-3 >= 1.8.0
+BuildRequires:	python-pallets-sphinx-themes >= 1.1.0
+BuildRequires:	sphinx-pdg-2 >= 1.8.0
 %endif
 Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
@@ -103,7 +103,8 @@ PYTHONPATH=$(pwd)/src \
 
 %if %{with doc}
 PYTHONPATH=$(pwd)/src \
-%{__make} -C docs html
+%{__make} -C docs html \
+	SPHINXBUILD=sphinx-build-2
 %endif
 
 %install
